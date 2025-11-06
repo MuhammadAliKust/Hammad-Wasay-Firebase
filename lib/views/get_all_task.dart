@@ -4,6 +4,7 @@ import 'package:hammad_wasay_firebase/services/task.dart';
 import 'package:hammad_wasay_firebase/views/create_task.dart';
 import 'package:hammad_wasay_firebase/views/get_completed_task.dart';
 import 'package:hammad_wasay_firebase/views/get_in_completed_task.dart';
+import 'package:hammad_wasay_firebase/views/update_task.dart';
 import 'package:provider/provider.dart';
 
 class GetAllTaskView extends StatelessWidget {
@@ -61,25 +62,28 @@ class GetAllTaskView extends StatelessWidget {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Checkbox(value: taskList[i].isCompleted, onChanged: (val) async {
+                    Checkbox(
+                      value: taskList[i].isCompleted,
+                      onChanged: (val) async {
                         try {
-                          await TaskServices().markTaskAsComplete(taskList[i]).then((
-                            val,
-                          ) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "Task has been completed successfully",
-                                ),
-                              ),
-                            );
-                          });
+                          await TaskServices()
+                              .markTaskAsComplete(taskList[i])
+                              .then((val) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      "Task has been completed successfully",
+                                    ),
+                                  ),
+                                );
+                              });
                         } catch (e) {
                           ScaffoldMessenger.of(
                             context,
                           ).showSnackBar(SnackBar(content: Text(e.toString())));
                         }
-                      },),
+                      },
+                    ),
                     IconButton(
                       onPressed: () async {
                         try {
@@ -103,7 +107,15 @@ class GetAllTaskView extends StatelessWidget {
                       icon: Icon(Icons.delete, color: Colors.red),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                UpdateTaskView(model: taskList[i]),
+                          ),
+                        );
+                      },
                       icon: Icon(Icons.edit, color: Colors.blue),
                     ),
                   ],

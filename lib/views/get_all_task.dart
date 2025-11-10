@@ -4,6 +4,7 @@ import 'package:hammad_wasay_firebase/services/task.dart';
 import 'package:hammad_wasay_firebase/views/create_task.dart';
 import 'package:hammad_wasay_firebase/views/get_completed_task.dart';
 import 'package:hammad_wasay_firebase/views/get_in_completed_task.dart';
+import 'package:hammad_wasay_firebase/views/priority/get_priority.dart';
 import 'package:hammad_wasay_firebase/views/update_task.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +36,17 @@ class GetAllTaskView extends StatelessWidget {
               );
             },
             icon: Icon(Icons.incomplete_circle),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GetAllPriorityView(),
+                ),
+              );
+            },
+            icon: Icon(Icons.category),
           ),
         ],
       ),

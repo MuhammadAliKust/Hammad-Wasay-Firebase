@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hammad_wasay_firebase/models/priority.dart';
 import 'package:hammad_wasay_firebase/services/priority.dart';
+import 'package:hammad_wasay_firebase/views/get_priority_task.dart';
 import 'package:hammad_wasay_firebase/views/priority/create_priority.dart';
 import 'package:provider/provider.dart';
 
@@ -80,13 +81,24 @@ class _GetAllPriorityViewState extends State<GetAllPriorityView> {
                               model: priorityList[i],
                             ),
                           ),
-                        ).then((val){
-                          setState(() {
-                            
-                          });
+                        ).then((val) {
+                          setState(() {});
                         });
                       },
                       icon: Icon(Icons.edit),
+                    ),
+
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                GetPriorityTaskView(model: priorityList[i]),
+                          ),
+                        );
+                      },
+                      icon: Icon(Icons.arrow_forward),
                     ),
                   ],
                 ),

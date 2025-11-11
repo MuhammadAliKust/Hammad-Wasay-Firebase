@@ -13,6 +13,7 @@ class TaskModel {
   final String? title;
   final String? description;
   final String? image;
+  final String? priorityID;
   final bool? isCompleted;
   final int? createdAt;
 
@@ -20,6 +21,7 @@ class TaskModel {
     this.docId,
     this.title,
     this.description,
+    this.priorityID,
     this.image,
     this.isCompleted,
     this.createdAt,
@@ -32,6 +34,7 @@ class TaskModel {
     image: json["image"],
     isCompleted: json["isCompleted"],
     createdAt: json["createdAt"],
+    priorityID: json["priorityID"],
   );
 
   Map<String, dynamic> toJson(String taskID) => {
@@ -40,6 +43,7 @@ class TaskModel {
     "description": description,
     "image": image,
     "isCompleted": isCompleted,
+    "priorityID": priorityID,
     "createdAt": createdAt,
   };
 }

@@ -14,6 +14,7 @@ class TaskModel {
   final String? description;
   final String? image;
   final String? priorityID;
+  final List<String>? favUsers;
   final bool? isCompleted;
   final int? createdAt;
 
@@ -22,6 +23,7 @@ class TaskModel {
     this.title,
     this.description,
     this.priorityID,
+            this.favUsers,
     this.image,
     this.isCompleted,
     this.createdAt,
@@ -31,6 +33,7 @@ class TaskModel {
     docId: json["docID"],
     title: json["title"],
     description: json["description"],
+     favUsers: json["favUsers"] == null ? [] : List<String>.from(json["favUsers"]!.map((x) => x)),
     image: json["image"],
     isCompleted: json["isCompleted"],
     createdAt: json["createdAt"],
@@ -44,6 +47,7 @@ class TaskModel {
     "image": image,
     "isCompleted": isCompleted,
     "priorityID": priorityID,
+        "favUsers": favUsers == null ? [] : List<dynamic>.from(favUsers!.map((x) => x)),
     "createdAt": createdAt,
   };
 }

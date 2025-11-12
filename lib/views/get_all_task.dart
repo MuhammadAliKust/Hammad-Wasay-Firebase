@@ -41,9 +41,7 @@ class GetAllTaskView extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => GetAllPriorityView(),
-                ),
+                MaterialPageRoute(builder: (context) => GetAllPriorityView()),
               );
             },
             icon: Icon(Icons.category),
@@ -74,6 +72,27 @@ class GetAllTaskView extends StatelessWidget {
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    IconButton(
+                      onPressed: () async {
+                        if (taskList[i].favUsers!.contains('1')) {
+                          await TaskServices().removeFromFavorite(
+                            taskID: taskList[i].docId.toString(),
+                            userID: '1',
+                          );
+                        } else {
+                          await TaskServices().markAsFavorite(
+                            taskID: taskList[i].docId.toString(),
+                            userID: '1',
+                          );
+                        }
+                      },
+                      icon: Icon(
+                        taskList[i].favUsers!.contains('1')
+                            ? Icons.favorite
+                            : Icons.favorite_outline,
+                        color: Colors.red,
+                      ),
+                    ),
                     Checkbox(
                       value: taskList[i].isCompleted,
                       onChanged: (val) async {

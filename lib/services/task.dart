@@ -42,6 +42,32 @@ class TaskServices {
         .update({'isCompleted': true});
   }
 
+  //markTaskCompleted
+  Future markAsFavorite({
+    required String taskID,
+    required String userID,
+  }) async {
+    return await FirebaseFirestore.instance
+        .collection('taskCollection')
+        .doc(taskID)
+        .update({
+          'favUsers': FieldValue.arrayUnion([userID]),
+        });
+  }
+
+  //markTaskCompleted
+  Future removeFromFavorite({
+    required String taskID,
+    required String userID,
+  }) async {
+    return await FirebaseFirestore.instance
+        .collection('taskCollection')
+        .doc(taskID)
+        .update({
+          'favUsers': FieldValue.arrayRemove([userID]),
+        });
+  }
+
   ///Get All Task
   Stream<List<TaskModel>> getAllTask() {
     return FirebaseFirestore.instance

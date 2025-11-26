@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hammad_wasay_firebase/models/user.dart';
+import 'package:hammad_wasay_firebase/provider/user.dart';
 import 'package:hammad_wasay_firebase/services/auth.dart';
+import 'package:hammad_wasay_firebase/services/user.dart';
 import 'package:hammad_wasay_firebase/views/forgot_pwd.dart';
+import 'package:hammad_wasay_firebase/views/profile.dart';
 import 'package:hammad_wasay_firebase/views/signup.dart';
+import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -16,6 +21,7 @@ class _LoginViewState extends State<LoginView> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(title: Text("Login")),
       body: Column(
@@ -48,7 +54,10 @@ class _LoginViewState extends State<LoginView> {
                             email: emailController.text,
                             password: pwdController.text,
                           )
-                          .then((val) {
+                          .then((val) async {
+                            UserModel userModel = await UserServices()
+                                .getUserByID(val.uid.toString());
+                            userProvider.setUser(userModel);
                             isLoading = false;
                             setState(() {});
                             showDialog(
@@ -57,11 +66,18 @@ class _LoginViewState extends State<LoginView> {
                                 return AlertDialog(
                                   title: Text("Message"),
                                   content: Text(
-                                    "User has been logged in successfully",
+                                    "${userModel.name.toString()} has been logged in successfully",
                                   ),
                                   actions: [
                                     TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ProfileView(),
+                                          ),
+                                        );
+                                      },
                                       child: Text("Okay"),
                                     ),
                                   ],

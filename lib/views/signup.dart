@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hammad_wasay_firebase/models/user.dart';
 import 'package:hammad_wasay_firebase/services/auth.dart';
+import 'package:hammad_wasay_firebase/services/user.dart';
 import 'package:hammad_wasay_firebase/views/login.dart';
 
 class SignUpView extends StatefulWidget {
@@ -10,6 +12,9 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController pwdController = TextEditingController();
   bool isLoading = false;
@@ -19,6 +24,9 @@ class _SignUpViewState extends State<SignUpView> {
       appBar: AppBar(title: Text("SignUP")),
       body: Column(
         children: [
+          TextField(controller: nameController),
+          TextField(controller: phoneController),
+          TextField(controller: addressController),
           TextField(controller: emailController),
           TextField(controller: pwdController),
           SizedBox(height: 20),
@@ -27,6 +35,24 @@ class _SignUpViewState extends State<SignUpView> {
               ? Center(child: CircularProgressIndicator())
               : ElevatedButton(
                   onPressed: () async {
+                    if (nameController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Name cannot be empty.")),
+                      );
+                      return;
+                    }
+                    if (phoneController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Phone cannot be empty.")),
+                      );
+                      return;
+                    }
+                    if (addressController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Address cannot be empty.")),
+                      );
+                      return;
+                    }
                     if (emailController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Email cannot be empty.")),
@@ -47,7 +73,18 @@ class _SignUpViewState extends State<SignUpView> {
                             email: emailController.text,
                             password: pwdController.text,
                           )
-                          .then((val) {
+                          .then((val) async {
+                            await UserServices().createUser(
+                              UserModel(
+                                docId: val.uid,
+                                name: nameController.text,
+                                phone: phoneController.text,
+                                address: addressController.text,
+                                email: emailController.text,
+                                createdAt:
+                                    DateTime.now().millisecondsSinceEpoch,
+                              ),
+                            );
                             isLoading = false;
                             setState(() {});
                             showDialog(
